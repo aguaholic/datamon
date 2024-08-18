@@ -1,36 +1,43 @@
 import { Injectable } from '@angular/core';
-import {  IPokemonListResponse, IPokemonListResponseItem } from './interfaces/pokemon.interface';
+
+import {
+  IPokemonDetailResponse,
+  IPokemonListItem,
+  IPokemonListResponse,
+} from './interfaces/pokemon.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PokemonService {
+  constructor() {}
 
-  constructor() { }
-
-  async getAllPokemons(): Promise<void> {
+  async getAllPokemons(): Promise<IPokemonListItem[]> {
     /*
     TODO: move me to .env file
     */
     const pokemonListResponse = await fetch(
-      "https://pokeapi.co/api/v2/pokemon"
+      'https://pokeapi.co/api/v2/pokemon',
     );
 
     const pokemonList: IPokemonListResponse = await pokemonListResponse.json();
 
-    const pokemonDetails = await Promise.all(
-      pokemonList.results.map(async pokemonItem => {
+    const pokemonDetails: IPokemonListItem[] = await Promise.all(
+      pokemonList.results.map(async (pokemonItem) => {
+        const pokemonDetailResponse = await fetch(pokemonItem.url);
 
-        const pokemonDetailResponse = await fetch(
-          pokemonItem.url
-        );
+        const pokemonDetail: IPokemonDetailResponse =
+          await pokemonDetailResponse.json();
 
-        const pokemonDetail = pokemonDetailResponse.json();
-
-        return pokemonDetail;
-      })
+        return {
+          id: pokemonDetail.id,
+          name: pokemonDetail.name,
+          image: pokemonDetail.sprites.front_default,
+          types: pokemonDetail.types.map((t) => t.type.name),
+        };
+      }),
     );
 
-    console.log(pokemonDetails);
+    return pokemonDetails;
   }
 }

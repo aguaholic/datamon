@@ -1,4 +1,4 @@
-export interface IPokemonListResponseItem {
+interface IPokemonListResponseItem {
   name: string;
   url: string;
 }
@@ -10,9 +10,28 @@ export interface IPokemonListResponse {
   results: IPokemonListResponseItem[];
 }
 
+type Sprite = {
+  front_default: string
+}
+
+type Types = {
+  slot: number;
+  type: {
+    name: string;
+    url: string
+  };
+}
+
+export interface IPokemonDetailResponse {
+  id: number;
+  name: string;
+  sprites: Sprite;
+  types: Types[];
+}
+
 export interface IPokemonListItem {
   id: number;
   name: string;
-  type: string[];
   image: string;
+  types: string[];
 }

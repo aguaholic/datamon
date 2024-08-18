@@ -40,7 +40,7 @@ import { PokemonService } from '../pokemon.service';
           </td>
 
           <td>
-            {{ pokemon.type }}
+            {{ pokemon.types }}
           </td>
         </tr>
       </ng-template>
@@ -48,11 +48,13 @@ import { PokemonService } from '../pokemon.service';
   `,
 })
 export class TableComponent {
-  pokemonService: PokemonService = inject(PokemonService);
-
   @Input() pokemonList!: IPokemonListItem[];
 
+  pokemonService: PokemonService = inject(PokemonService);
+
   constructor() {
-    this.pokemonService.getAllPokemons();
+    this.pokemonService.getAllPokemons().then((result) => {
+      this.pokemonList = result;
+    });
   }
 }
