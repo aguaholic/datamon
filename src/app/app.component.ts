@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common';
 
 import { TableComponent } from './table/table.component';
 import { TableData } from './table/table-data';
@@ -8,15 +7,12 @@ import { TableData } from './table/table-data';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, TableComponent],
+  imports: [RouterOutlet, TableComponent],
   template: `
     <h1 class="text-red-200">Datamon</h1>
     <h2>Your Pokémon db</h2>
 
-    <app-table
-      *ngFor="let pokemon of pokemonList"
-      [pokemon]="pokemon"
-    ></app-table>
+    <app-table [pokemonList]="pokemonList"></app-table>
   `,
 })
 export class AppComponent {

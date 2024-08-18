@@ -10,6 +10,7 @@ import { TableData } from './table-data';
   template: `
     <p-table
       dataKey="id"
+      [value]="pokemonList"
       [rows]="10"
       [paginator]="true"
       [tableStyle]="{ 'min-width': '75rem' }"
@@ -23,7 +24,7 @@ import { TableData } from './table-data';
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="body">
+      <ng-template pTemplate="body" let-pokemon>
         <tr [pSelectableRow]="pokemon">
           <td>
             {{ pokemon.id }}
@@ -46,5 +47,5 @@ import { TableData } from './table-data';
   `,
 })
 export class TableComponent {
-  @Input() pokemon!: TableData;
+  @Input() pokemonList!: TableData[];
 }
