@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { TableComponent } from './table/table.component';
-import { TableData } from './table/table-data';
+import { IPokemonListItem } from './interfaces/pokemon.interface';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +17,7 @@ import { TableData } from './table/table-data';
 })
 export class AppComponent {
   title = 'Datamon';
-  pokemonList: TableData[] = [
+  pokemonList: IPokemonListItem[] = [
     {
       id: 1,
       name: 'Pikachu',

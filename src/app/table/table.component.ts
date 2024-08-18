@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { TableModule } from 'primeng/table';
 
-import { TableData } from './table-data';
+import { IPokemonListItem } from '../interfaces/pokemon.interface';
+import { PokemonService } from '../pokemon.service';
 
 @Component({
   selector: 'app-table',
@@ -47,5 +48,11 @@ import { TableData } from './table-data';
   `,
 })
 export class TableComponent {
-  @Input() pokemonList!: TableData[];
+  pokemonService: PokemonService = inject(PokemonService);
+
+  @Input() pokemonList!: IPokemonListItem[];
+
+  constructor() {
+    this.pokemonService.getAllPokemons();
+  }
 }
