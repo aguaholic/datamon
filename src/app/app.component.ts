@@ -10,7 +10,7 @@ import { TableData } from './table/table-data';
   standalone: true,
   imports: [CommonModule, RouterOutlet, TableComponent],
   template: `
-    <h1>Datamon</h1>
+    <h1 class="text-red-200">Datamon</h1>
     <h2>Your Pokémon db</h2>
 
     <app-table
