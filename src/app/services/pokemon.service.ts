@@ -14,12 +14,14 @@ export class PokemonService {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor() {}
 
-  async getAllPokemons(): Promise<IPokemonListItem[]> {
+  async getAllPokemons(pageLength: number, selectePage: number): Promise<IPokemonListItem[]> {
     /*
     TODO: move me to .env file
     */
+    const offset = selectePage > 1 ? pageLength * selectePage : 0;
+
     const pokemonListResponse = await fetch(
-      'https://pokeapi.co/api/v2/pokemon',
+      `https://pokeapi.co/api/v2/pokemon?limit=${pageLength}&offset=${offset}`,
     );
 
     const pokemonList: IPokemonListResponse = await pokemonListResponse.json();

@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TableModule } from 'primeng/table';
 
@@ -13,7 +13,7 @@ import { PokemonService } from '../services/pokemon.service';
     <p-table
       dataKey="id"
       [value]="pokemonList"
-      [rows]="10"
+      [rows]="pageLength"
       [paginator]="true"
       [tableStyle]="{ 'min-width': '25rem' }"
     >
@@ -69,13 +69,22 @@ import { PokemonService } from '../services/pokemon.service';
   `,
 })
 export class TableComponent {
-  @Input() pokemonList!: IPokemonListItem[];
-
   pokemonService: PokemonService = inject(PokemonService);
+  pokemonList!: IPokemonListItem[];
+
+  pageLength: number;
+  selectedPage: number;
 
   constructor() {
-    this.pokemonService.getAllPokemons().then((result) => {
+    this.pageLength = 10;
+    this.selectedPage = 1;
+
+    this.pokemonService.getAllPokemons(this.pageLength, this.selectedPage).then(result => {
       this.pokemonList = result;
     });
+  }
+
+  public handlePageChange(page: number): void {
+    this.selectedPage = page;
   }
 }
