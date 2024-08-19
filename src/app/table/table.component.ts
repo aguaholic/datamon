@@ -96,9 +96,7 @@ export class TableComponent {
   }
 
   handlePageChange(event: PaginatorState): void {
-    const nextPage = event.page!;
-
-    this.pokemonService.getAllPokemons(this.rows, nextPage).then(apiResponse => {
+    this.pokemonService.getAllPokemons(this.rows, event.page!).then(apiResponse => {
       this.first = event.first!;
       this.pokemonList = apiResponse.results;
     });
