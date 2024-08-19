@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+
 import { TableModule } from 'primeng/table';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 
 import { IPokemonListItem } from '../interfaces/pokemon.interface';
 import { PokemonService } from '../services/pokemon.service';
@@ -8,13 +10,12 @@ import { PokemonService } from '../services/pokemon.service';
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [TableModule, RouterModule],
+  imports: [TableModule, RouterModule, PaginatorModule],
   template: `
     <p-table
       dataKey="id"
       [value]="pokemonList"
-      [rows]="pageLength"
-      [paginator]="true"
+      [rows]="rows"
       [tableStyle]="{ 'min-width': '25rem' }"
     >
       <ng-template pTemplate="header">
@@ -66,25 +67,40 @@ import { PokemonService } from '../services/pokemon.service';
         </tr>
       </ng-template>
     </p-table>
+
+    <p-paginator
+    (onPageChange)="handlePageChange($event)"
+    [first]="first"
+    [rows]="rows"
+    [totalRecords]="totalRecords"
+    />
   `,
 })
 export class TableComponent {
   pokemonService: PokemonService = inject(PokemonService);
+
+  first: number;
+  rows: number;
+  totalRecords!: number;
+
   pokemonList!: IPokemonListItem[];
 
-  pageLength: number;
-  selectedPage: number;
-
   constructor() {
-    this.pageLength = 10;
-    this.selectedPage = 1;
+    this.first = 0;
+    this.rows = 10;
 
-    this.pokemonService.getAllPokemons(this.pageLength, this.selectedPage).then(result => {
+    this.pokemonService.getAllPokemons(this.rows, this.first).then(result => {
       this.pokemonList = result;
+      this.totalRecords = 1302;
     });
   }
 
-  public handlePageChange(page: number): void {
-    this.selectedPage = page;
+  handlePageChange(event: PaginatorState): void {
+    const nextPage = event.page!;
+
+    this.pokemonService.getAllPokemons(this.rows, nextPage).then(result => {
+      this.pokemonList = result;
+      this.first = event.first!;
+    });
   }
 }

@@ -15,11 +15,12 @@ export class PokemonService {
   constructor() {}
 
   async getAllPokemons(pageLength: number, selectePage: number): Promise<IPokemonListItem[]> {
-    /*
-    TODO: move me to .env file
-    */
-    const offset = selectePage > 1 ? pageLength * selectePage : 0;
 
+    const offset = selectePage > 0 ? pageLength * selectePage : 0;
+
+    /*
+    TODO: move the base URL to the .env file
+    */
     const pokemonListResponse = await fetch(
       `https://pokeapi.co/api/v2/pokemon?limit=${pageLength}&offset=${offset}`,
     );
