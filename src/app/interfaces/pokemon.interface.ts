@@ -10,15 +10,15 @@ export interface IPokemonListResponse {
   results: IPokemonListResponseItem[];
 }
 
-type Sprite = {
-  front_default: string
+interface Sprite {
+  front_default: string;
 }
 
-type Types = {
+interface Types {
   slot: number;
   type: {
     name: string;
-    url: string
+    url: string;
   };
 }
 
