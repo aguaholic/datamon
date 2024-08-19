@@ -3,13 +3,6 @@ interface IPokemonListResponseItem {
   url: string;
 }
 
-export interface IPokemonListResponse {
-  count: number;
-  next: string;
-  previous: string;
-  results: IPokemonListResponseItem[];
-}
-
 interface Sprite {
   front_default: string;
 }
@@ -20,6 +13,13 @@ interface Types {
     name: string;
     url: string;
   };
+}
+
+export interface IPokemonListResponse {
+  count: number;
+  next: string;
+  previous: string;
+  results: IPokemonListResponseItem[];
 }
 
 export interface IPokemonDetailResponse {
@@ -34,4 +34,9 @@ export interface IPokemonListItem {
   name: string;
   image: string;
   types: string[];
+}
+
+export interface IPaginatedPokemonList {
+  records: number;
+  results: IPokemonListItem[];
 }

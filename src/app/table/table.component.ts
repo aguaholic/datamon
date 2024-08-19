@@ -89,18 +89,18 @@ export class TableComponent {
     this.first = 0;
     this.rows = 10;
 
-    this.pokemonService.getAllPokemons(this.rows, this.first).then(result => {
-      this.pokemonList = result;
-      this.totalRecords = 1302;
+    this.pokemonService.getAllPokemons(this.rows, this.first).then(apiResponse => {
+      this.pokemonList = apiResponse.results;
+      this.totalRecords = apiResponse.records;
     });
   }
 
   handlePageChange(event: PaginatorState): void {
     const nextPage = event.page!;
 
-    this.pokemonService.getAllPokemons(this.rows, nextPage).then(result => {
-      this.pokemonList = result;
+    this.pokemonService.getAllPokemons(this.rows, nextPage).then(apiResponse => {
       this.first = event.first!;
+      this.pokemonList = apiResponse.results;
     });
   }
 }

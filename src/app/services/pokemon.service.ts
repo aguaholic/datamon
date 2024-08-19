@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import {
+  IPaginatedPokemonList,
   IPokemonDetailResponse,
   IPokemonListItem,
   IPokemonListResponse,
@@ -14,7 +15,7 @@ export class PokemonService {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor() {}
 
-  async getAllPokemons(pageLength: number, selectePage: number): Promise<IPokemonListItem[]> {
+  async getAllPokemons(pageLength: number, selectePage: number): Promise<IPaginatedPokemonList> {
 
     const offset = selectePage > 0 ? pageLength * selectePage : 0;
 
@@ -43,6 +44,9 @@ export class PokemonService {
       }),
     );
 
-    return pokemonDetails;
+    return {
+      results: pokemonDetails,
+      records: pokemonList.count,
+    };
   }
 }
