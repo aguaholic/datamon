@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 import { TableComponent } from './table/table.component';
+import { PokemonComponent } from './pokemon/pokemon.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, TableComponent],
+  imports: [RouterModule, TableComponent, PokemonComponent],
   template: `
     <div class="p-5">
       <h1
@@ -18,7 +19,7 @@ import { TableComponent } from './table/table.component';
         Your <span class="text-yellow-500 bg-blue-500">Pokémon</span> DB
       </h2>
 
-      <app-table></app-table>
+      <router-outlet></router-outlet>
     </div>
   `,
 })

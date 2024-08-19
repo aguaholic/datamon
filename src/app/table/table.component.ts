@@ -1,4 +1,5 @@
 import { Component, Input, inject } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { TableModule } from 'primeng/table';
 
 import { IPokemonListItem } from '../interfaces/pokemon.interface';
@@ -7,11 +8,10 @@ import { PokemonService } from '../services/pokemon.service';
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [TableModule],
+  imports: [TableModule, RouterModule],
   template: `
     <p-table
       dataKey="id"
-      selectionMode="single"
       [value]="pokemonList"
       [rows]="10"
       [paginator]="true"
@@ -44,7 +44,8 @@ import { PokemonService } from '../services/pokemon.service';
 
       <ng-template pTemplate="body" let-pokemon>
         <tr
-          [pSelectableRow]="pokemon"
+          [routerLink]="['/pokemon', pokemon.id]"
+          routerLinkActive="router-link-active"
           class="text-sm font-normal text-gray-700 bg-gray-50 hover:bg-lime-300 capitalize"
         >
           <td class="border-r-2 border-yellow-500">
