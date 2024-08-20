@@ -70,10 +70,10 @@ import { PokemonService } from '../services/pokemon.service';
               />
               <!-- TODO: render here abilities -->
               <span class="ml-[-10px] text-lg font-bold">{{
-                pokemon?.name
+                pokemon?.species
               }}</span>
 
-              <span class="text-xl font-semibold">10</span>
+              <span class="text-xl font-semibold">{{ pokemon?.weight }}</span>
             </div>
 
             <div class="border-t-[2px] border-black my-2 py-2"></div>
@@ -81,9 +81,12 @@ import { PokemonService } from '../services/pokemon.service';
             <div
               class="flex justify-between items-center text-xs flex-col md:flex-row"
             >
-              <div class="mb-2 md:mb-0 font-semibold">
-                <span class="mr-1">forms</span>
-                <!-- TODO: render forms -->
+              <div
+                class="mb-2 md:mb-0 font-semibold"
+                *ngFor="let pokemonAbility of pokemon?.abilities"
+              >
+                <span class="mr-1">{{ pokemonAbility }}</span>
+
                 <div class="flex items-center">
                   <img
                     src="./fighting.png"
@@ -91,21 +94,6 @@ import { PokemonService } from '../services/pokemon.service';
                     width="20"
                     height="20"
                     style="margin-left: 17px;"
-                  />
-                </div>
-              </div>
-
-              <div class="mb-2 md:mb-0 font-semibold">
-                <span class="mr-1">species</span>
-                <!-- TODO: render species -->
-
-                <div class="flex items-center">
-                  <img
-                    src="./energy.png"
-                    alt="Image Description"
-                    width="20"
-                    height="20"
-                    style="margin-left: 21px;"
                   />
                 </div>
               </div>

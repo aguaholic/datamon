@@ -6,6 +6,7 @@ import {
   IPokemonListResponse,
   IPaginatedPokemonList,
   IPokemonDetailResponse,
+  IPokemonResponse,
 } from '../interfaces/pokemon.interface';
 
 @Injectable({
@@ -56,7 +57,7 @@ export class PokemonService {
       `${this.BASE_URL}/pokemon/${pokemonId}`,
     );
 
-    const pokemon: IPokemon = await pokemonResponse.json();
+    const pokemon: IPokemonResponse = await pokemonResponse.json();
 
     return {
       id: pokemon.id,
@@ -65,6 +66,8 @@ export class PokemonService {
       height: pokemon.height,
       weight: pokemon.weight,
       sprites: pokemon.sprites,
+      species: pokemon.species.name,
+      abilities: pokemon.abilities.map((ability) => ability.ability.name),
       base_experience: pokemon.base_experience,
     };
   }
@@ -73,7 +76,7 @@ export class PokemonService {
     const pokemonResponse = await fetch(`${this.BASE_URL}/pokemon/${name}`);
 
     if (pokemonResponse.ok) {
-      const pokemon: IPokemon = await pokemonResponse.json();
+      const pokemon: IPokemonResponse = await pokemonResponse.json();
 
       return {
         id: pokemon.id,
@@ -82,6 +85,8 @@ export class PokemonService {
         height: pokemon.height,
         weight: pokemon.weight,
         sprites: pokemon.sprites,
+        species: pokemon.species.name,
+        abilities: pokemon.abilities.map((ability) => ability.ability.name),
         base_experience: pokemon.base_experience,
       };
     }

@@ -15,6 +15,13 @@ interface Types {
   };
 }
 
+interface Ability {
+  ability: {
+    name: string;
+    url: string;
+  };
+}
+
 export interface IPokemonListResponse {
   next: string;
   count: number;
@@ -41,6 +48,20 @@ export interface IPaginatedPokemonList {
   results: IPokemonListItem[];
 }
 
+export interface IPokemonResponse {
+  id: number;
+  name: string;
+  order: number;
+  weight: number;
+  height: number;
+  sprites: Sprite;
+  species: {
+    name: string;
+  };
+  abilities: Ability[];
+  base_experience: string;
+}
+
 export interface IPokemon {
   id: number;
   name: string;
@@ -48,5 +69,7 @@ export interface IPokemon {
   weight: number;
   height: number;
   sprites: Sprite;
+  species: string;
+  abilities: string[];
   base_experience: string;
 }

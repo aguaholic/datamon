@@ -20,6 +20,54 @@ import { PokemonService } from '../services/pokemon.service';
     InputIconModule,
   ],
   template: `
+    @if (pokemonNotFound) {
+      <div
+        id="toast-warning"
+        class="flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow"
+        role="alert"
+      >
+        <div
+          class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-orange-500 bg-orange-100 rounded-lg dark:bg-orange-700 dark:text-orange-200"
+        >
+          <svg
+            class="w-5 h-5"
+            aria-hidden="true"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 0 1-2 0V6a1 1 0 0 1 2 0v5Z"
+            />
+          </svg>
+        </div>
+
+        <div class="ms-3 text-sm font-normal">Pokémon does not exist</div>
+        <button
+          type="button"
+          (click)="handleCloseButton()"
+          class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8"
+          data-dismiss-target="#toast-warning"
+          aria-label="Close"
+        >
+
+        <svg
+            class="w-3 h-3"
+            aria-hidden="true"
+            fill="none"
+            viewBox="0 0 14 14"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+            />
+          </svg>
+        </button>
+      </div>
+    }
+
     <p-table
       dataKey="id"
       [value]="pokemonList"
@@ -28,18 +76,19 @@ import { PokemonService } from '../services/pokemon.service';
     >
       <ng-template pTemplate="caption">
         <div class="flex">
-          <p-iconField iconPosition="left" class="ml-auto">
-            <p-inputIcon>
-              <i class="pi pi-search"></i>
-            </p-inputIcon>
+          <input
+            pInputText
+            type="text"
+            (input)="this.saveSearch($event)"
+            placeholder="Search by name"
+          />
 
-            <input
-              pInputText
-              type="text"
-              (input)="this.handleSearch($event)"
-              placeholder="Search by name"
-            />
-          </p-iconField>
+          <button
+            [disabled]="!pokemonName || pokemonName.length === 0"
+            (click)="this.handleSearch()"
+          >
+            Search
+          </button>
         </div>
       </ng-template>
 
@@ -111,9 +160,14 @@ export class TableComponent {
 
   pokemonList!: IPokemonListItem[];
 
+  pokemonName!: string;
+  pokemonNotFound: boolean;
+
   constructor() {
     this.first = 0;
     this.rows = 10;
+
+    this.pokemonNotFound = false;
 
     this.pokemonService
       .getAllPokemonsPaginated(this.rows, this.first)
@@ -132,14 +186,24 @@ export class TableComponent {
       });
   }
 
-  handleSearch(event: Event): void {
-    const pokemonName = (event.target as HTMLInputElement).value;
+  saveSearch(event: Event): void {
+    this.pokemonName = (event.target as HTMLInputElement).value;
+  }
 
-    this.pokemonService.getPokemonByName(pokemonName).then((apiResponse) => {
+  handleSearch(): void {
+    this.pokemonService
+      .getPokemonByName(this.pokemonName.toLowerCase())
+      .then((apiResponse) => {
+        if (apiResponse) {
+          this.pokemonNotFound = false;
+          this.router.navigate([`pokemon/${apiResponse?.id}`]);
+        } else {
+          this.pokemonNotFound = true;
+        }
+      });
+  }
 
-      if (apiResponse) {
-        this.router.navigate([`pokemon/${apiResponse?.id}`]);
-      }
-    });
+  handleCloseButton() {
+    this.pokemonNotFound = false;
   }
 }
