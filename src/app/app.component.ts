@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { TableComponent } from './table/table.component';
-import { PokemonComponent } from './pokemon/pokemon.component';
-
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterModule, TableComponent, PokemonComponent],
+  imports: [RouterModule],
   template: `
     <div class="p-5">
       <h1

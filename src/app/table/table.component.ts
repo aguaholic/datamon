@@ -1,7 +1,9 @@
 import { Component, inject } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 
 import { TableModule } from 'primeng/table';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 
 import { IPokemonListItem } from '../interfaces/pokemon.interface';
@@ -10,7 +12,13 @@ import { PokemonService } from '../services/pokemon.service';
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [TableModule, RouterModule, PaginatorModule],
+  imports: [
+    TableModule,
+    RouterModule,
+    PaginatorModule,
+    IconFieldModule,
+    InputIconModule,
+  ],
   template: `
     <p-table
       dataKey="id"
@@ -18,6 +26,23 @@ import { PokemonService } from '../services/pokemon.service';
       [rows]="rows"
       [tableStyle]="{ 'min-width': '25rem' }"
     >
+      <ng-template pTemplate="caption">
+        <div class="flex">
+          <p-iconField iconPosition="left" class="ml-auto">
+            <p-inputIcon>
+              <i class="pi pi-search"></i>
+            </p-inputIcon>
+
+            <input
+              pInputText
+              type="text"
+              (input)="this.handleSearch($event)"
+              placeholder="Search by name"
+            />
+          </p-iconField>
+        </div>
+      </ng-template>
+
       <ng-template pTemplate="header">
         <tr class="text-lg font-bold text-left tracking-widest">
           <th
@@ -77,6 +102,7 @@ import { PokemonService } from '../services/pokemon.service';
   `,
 })
 export class TableComponent {
+  router: Router = inject(Router);
   pokemonService: PokemonService = inject(PokemonService);
 
   first: number;
@@ -90,7 +116,7 @@ export class TableComponent {
     this.rows = 10;
 
     this.pokemonService
-      .getAllPokemons(this.rows, this.first)
+      .getAllPokemonsPaginated(this.rows, this.first)
       .then((apiResponse) => {
         this.pokemonList = apiResponse.results;
         this.totalRecords = apiResponse.records;
@@ -99,10 +125,21 @@ export class TableComponent {
 
   handlePageChange(event: PaginatorState): void {
     this.pokemonService
-      .getAllPokemons(this.rows, event.page!)
+      .getAllPokemonsPaginated(this.rows, event.page!)
       .then((apiResponse) => {
         this.first = event.first!;
         this.pokemonList = apiResponse.results;
       });
+  }
+
+  handleSearch(event: Event): void {
+    const pokemonName = (event.target as HTMLInputElement).value;
+
+    this.pokemonService.getPokemonByName(pokemonName).then((apiResponse) => {
+
+      if (apiResponse) {
+        this.router.navigate([`pokemon/${apiResponse?.id}`]);
+      }
+    });
   }
 }

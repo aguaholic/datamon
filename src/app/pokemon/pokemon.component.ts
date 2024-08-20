@@ -1,9 +1,9 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 
-import { PokemonService } from '../services/pokemon.service';
 import { IPokemon } from '../interfaces/pokemon.interface';
-import { CommonModule } from '@angular/common';
+import { PokemonService } from '../services/pokemon.service';
 
 @Component({
   selector: 'app-pokemon',

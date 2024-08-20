@@ -17,7 +17,7 @@ export class PokemonService {
   */
   BASE_URL = 'https://pokeapi.co/api/v2';
 
-  async getAllPokemons(
+  async getAllPokemonsPaginated(
     pageLength: number,
     selectePage: number,
   ): Promise<IPaginatedPokemonList> {
@@ -67,5 +67,25 @@ export class PokemonService {
       sprites: pokemon.sprites,
       base_experience: pokemon.base_experience,
     };
+  }
+
+  async getPokemonByName(name: string): Promise<IPokemon | null> {
+    const pokemonResponse = await fetch(`${this.BASE_URL}/pokemon/${name}`);
+
+    if (pokemonResponse.ok) {
+      const pokemon: IPokemon = await pokemonResponse.json();
+
+      return {
+        id: pokemon.id,
+        name: pokemon.name,
+        order: pokemon.order,
+        height: pokemon.height,
+        weight: pokemon.weight,
+        sprites: pokemon.sprites,
+        base_experience: pokemon.base_experience,
+      };
+    }
+
+    return null;
   }
 }
