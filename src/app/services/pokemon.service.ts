@@ -57,12 +57,14 @@ export class PokemonService {
     );
 
     const pokemon: IPokemon = await pokemonResponse.json();
+
     return {
       id: pokemon.id,
       name: pokemon.name,
       order: pokemon.order,
       height: pokemon.height,
       weight: pokemon.weight,
+      sprites: pokemon.sprites,
       base_experience: pokemon.base_experience,
     };
   }

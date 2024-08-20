@@ -47,5 +47,6 @@ export interface IPokemon {
   order: number;
   weight: number;
   height: number;
+  sprites: Sprite;
   base_experience: string;
 }
