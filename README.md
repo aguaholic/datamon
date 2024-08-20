@@ -16,7 +16,8 @@ Datamon is an Angular app that shows Pokémon data in a neat table with a detail
   ```bash
   ng serve
 
-  Navigate to http://localhost:4200/ in your browser to see the application running.
+
+- Navigate to http://localhost:4200/ in your browser to see the application running.
 
 ### Notes
 
