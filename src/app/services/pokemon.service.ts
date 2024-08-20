@@ -1,29 +1,30 @@
 import { Injectable } from '@angular/core';
 
 import {
-  IPaginatedPokemonList,
-  IPokemonDetailResponse,
+  IPokemon,
   IPokemonListItem,
   IPokemonListResponse,
+  IPaginatedPokemonList,
+  IPokemonDetailResponse,
 } from '../interfaces/pokemon.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PokemonService {
-  // TODO: remove this
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  constructor() {}
+  /*
+  TODO: move the base URL to the .env file
+  */
+  BASE_URL = 'https://pokeapi.co/api/v2';
 
-  async getAllPokemons(pageLength: number, selectePage: number): Promise<IPaginatedPokemonList> {
-
+  async getAllPokemons(
+    pageLength: number,
+    selectePage: number,
+  ): Promise<IPaginatedPokemonList> {
     const offset = selectePage > 0 ? pageLength * selectePage : 0;
 
-    /*
-    TODO: move the base URL to the .env file
-    */
     const pokemonListResponse = await fetch(
-      `https://pokeapi.co/api/v2/pokemon?limit=${pageLength}&offset=${offset}`,
+      `${this.BASE_URL}/pokemon?limit=${pageLength}&offset=${offset}`,
     );
 
     const pokemonList: IPokemonListResponse = await pokemonListResponse.json();
@@ -47,6 +48,22 @@ export class PokemonService {
     return {
       results: pokemonDetails,
       records: pokemonList.count,
+    };
+  }
+
+  async getPokemonById(pokemonId: number): Promise<IPokemon> {
+    const pokemonResponse = await fetch(
+      `${this.BASE_URL}/pokemon/${pokemonId}`,
+    );
+
+    const pokemon: IPokemon = await pokemonResponse.json();
+    return {
+      id: pokemon.id,
+      name: pokemon.name,
+      order: pokemon.order,
+      height: pokemon.height,
+      weight: pokemon.weight,
+      base_experience: pokemon.base_experience,
     };
   }
 }

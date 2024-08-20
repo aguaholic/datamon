@@ -1,6 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 
+import { PokemonService } from '../services/pokemon.service';
+import { IPokemon } from '../interfaces/pokemon.interface';
+
 @Component({
   selector: 'app-pokemon',
   standalone: true,
@@ -14,7 +17,6 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
       >
         < Go back
       </a>
-
       <div
         class="p-2  mt-5 border-2 border-r-blue-500 border-t-green-500 border-l-red-500 border-b-yellow-500"
       >
@@ -23,12 +25,14 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
             class="max-w-[400px] mx-auto bg-[#f3e67c] p-4 rounded-[20px] shadow-lg border-[21px] border-[#f4d700]"
           >
             <div class="flex justify-between items-center mt-[-10px]">
-              <span class="text-xs font-bold text-black ml-[7px] mb-[-6px]"
-                >Thicc Pokemon</span
-              >
+              <span class="text-xs font-bold text-black ml-[7px] mb-[-6px]">{{
+                pokemon?.name
+              }}</span>
             </div>
             <div class="flex justify-between items-center">
-              <h2 class="text-xl font-bold mb-[3px] ml-[7px]">Thicc Pikachu</h2>
+              <h2 class="text-xl font-bold mb-[3px] ml-[7px]">
+                {{ pokemon?.name }}
+              </h2>
               <div class="flex items-center">
                 <span class="text-xl text-red-700 mb-[3px]">40 HP</span>
                 <img
@@ -59,7 +63,7 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
               <div
                 class="text-xs mb-1 bg-[#bc8c0c] border border-[#bc8c0c] p-2 flex justify-center items-center h-[10px] w-[280px] italic font-semibold"
               >
-                <span>Thicc Pokemon. Width: TH' IC", Weight: MYB</span>
+                <span>{{ pokemon?.name }}. Weight: {{ pokemon?.height }}</span>
               </div>
             </div>
             <div class="flex items-center justify-between mb-4 mt-2">
@@ -97,8 +101,8 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
                   </span>
                   <span class="text-xs font-semibold">
                     <p>
-                      Flip a coin. If tails, Thicc Pikachu deals 10 damage to
-                      itself.
+                      Flip a coin. If tails, {{ pokemon?.name }} deals 10 damage
+                      to itself.
                     </p>
                   </span>
                 </div>
@@ -167,4 +171,14 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
 })
 export class PokemonComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
+  pokemonService = inject(PokemonService);
+  pokemon: IPokemon | undefined;
+
+  constructor() {
+    const pokemonId = Number(this.route.snapshot.params['id']);
+
+    this.pokemonService.getPokemonById(pokemonId).then((result) => {
+      this.pokemon = result;
+    });
+  }
 }

@@ -69,10 +69,10 @@ import { PokemonService } from '../services/pokemon.service';
     </p-table>
 
     <p-paginator
-    (onPageChange)="handlePageChange($event)"
-    [first]="first"
-    [rows]="rows"
-    [totalRecords]="totalRecords"
+      (onPageChange)="handlePageChange($event)"
+      [first]="first"
+      [rows]="rows"
+      [totalRecords]="totalRecords"
     />
   `,
 })
@@ -89,16 +89,20 @@ export class TableComponent {
     this.first = 0;
     this.rows = 10;
 
-    this.pokemonService.getAllPokemons(this.rows, this.first).then(apiResponse => {
-      this.pokemonList = apiResponse.results;
-      this.totalRecords = apiResponse.records;
-    });
+    this.pokemonService
+      .getAllPokemons(this.rows, this.first)
+      .then((apiResponse) => {
+        this.pokemonList = apiResponse.results;
+        this.totalRecords = apiResponse.records;
+      });
   }
 
   handlePageChange(event: PaginatorState): void {
-    this.pokemonService.getAllPokemons(this.rows, event.page!).then(apiResponse => {
-      this.first = event.first!;
-      this.pokemonList = apiResponse.results;
-    });
+    this.pokemonService
+      .getAllPokemons(this.rows, event.page!)
+      .then((apiResponse) => {
+        this.first = event.first!;
+        this.pokemonList = apiResponse.results;
+      });
   }
 }

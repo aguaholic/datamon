@@ -16,8 +16,8 @@ interface Types {
 }
 
 export interface IPokemonListResponse {
-  count: number;
   next: string;
+  count: number;
   previous: string;
   results: IPokemonListResponseItem[];
 }
@@ -39,4 +39,13 @@ export interface IPokemonListItem {
 export interface IPaginatedPokemonList {
   records: number;
   results: IPokemonListItem[];
+}
+
+export interface IPokemon {
+  id: number;
+  name: string;
+  order: number;
+  weight: number;
+  height: number;
+  base_experience: string;
 }
